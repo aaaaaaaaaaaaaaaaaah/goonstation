@@ -125,7 +125,7 @@ ADMIN_INTERACT_PROCS(/obj/machinery/teleport/portal_generator, proc/engage, proc
 /obj/machinery/teleport/portal_generator
 	name = "portal generator"
 	desc = "This fancy piece of machinery generates the portal. You can flick it on and off."
-	icon_state = "controller"
+	icon_state = "tele_controller"
 	machine_registry_idx = MACHINES_PORTALGENERATORS
 	var/active = 0
 	var/engaged = 0
@@ -152,9 +152,9 @@ ADMIN_INTERACT_PROCS(/obj/machinery/teleport/portal_generator, proc/engage, proc
 	power_change()
 		..()
 		if(status & NOPOWER)
-			icon_state = "controller-p"
+			icon_state = "tele_controller"
 		else
-			icon_state = "controller"
+			icon_state = "tele_controller"
 
 	proc/engage()
 		if(status & (BROKEN|NOPOWER))
@@ -167,6 +167,9 @@ ADMIN_INTERACT_PROCS(/obj/machinery/teleport/portal_generator, proc/engage, proc
 		use_power(5000)
 		src.visible_message("<b>[src]</b> intones, \"Teleporter engaged.\"")
 		src.add_fingerprint(usr)
+		icon_state = "tele_controller_turnon"
+		SPAWN(0.9 SECONDS)
+			icon_state = "tele_controller_on"
 		src.engaged = 1
 		return
 
@@ -180,6 +183,7 @@ ADMIN_INTERACT_PROCS(/obj/machinery/teleport/portal_generator, proc/engage, proc
 			R.toggle_off()
 		src.visible_message("<b>[src]</b> intones, \"Teleporter disengaged.\"")
 		src.add_fingerprint(usr)
+		icon_state = "tele_controller"
 		src.engaged = 0
 		return
 
